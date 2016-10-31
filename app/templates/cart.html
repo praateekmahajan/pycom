@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <h2>Hi, {{ current_user.name }}!</h2>
+    {% else %}
+        <h2><a href="{{url_for('login')}}">Register</a> to get special deals</h2>
+    {% endif %}
+    <hr/>
+        {% if cart|length >0 %}
+        <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in cart%}
+            {% if cart[product].status=="deleted"%}
+            <tr class="danger">
+            {% elif cart[product].status=="oos"%}
+            <tr class="warning">
+            {% else %}
+            <tr>
+            {% endif %}
+                <td>
+                    {% if cart[product].status=="deleted"%}
+                    Product has been deleted, please keep checking
+                    {% elif cart[product].status=="oos"%}
+                    Product is out of stock
+                    {% else %}
+                    {{cart[product].importantmessage}}
+                    {% endif %}
+                </td>
+
+                <td><a href="/product/{{cart[product].id}}">{{ cart[product].name }}</a></td>
+                <td>{{ cart[product].quantity }}</td>
+                <td>{% if cart[product].maxprice==cart[product].minprice %}
+                         Rs<b>{{cart[product].maxprice}}</b>
+                    {% else %}
+                         Rs<s>{{cart[product].maxprice}}</s> <b>{{cart[product].minprice}}</b>
+                    {% endif %}</td>
+                <td>{{ cart[product].couponused }}</td>
+                <td>{{cart[product].total}}
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <h2> {{total}}</h2>
+        {%else%}
+        <h2>Nothing in your cart, shop <a href="{{url_for('index')}}">here</a>.</h2>
+        {%endif%}
+
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <h2>Hi, {{ current_user.name }}!</h2>
+    {% else %}
+        <h2><a href="{{url_for('login')}}">Register</a> to get special deals</h2>
+    {% endif %}
+    <hr/>
+    <ul>
+        {% for product in products %}
+            {% if product.quantity >= 0%}
+            <li style="padding:20px;">
+                <a href="/product/{{product.id}}"> {{ product.name }}</a>:
+                {% if product.price==product.minpricecoupon.afterprice or product.minpricecoupon==0%}
+                     Rs<b>{{product.price}}</b>
+                {% else %}
+                     Rs<s>{{product.price}}</s> <b>{{product.minpricecoupon.afterprice}}</b>
+                {% endif %}
+                {% if product.quantity != 0 %}
+                <button type="button" class="btn-xs btn-success addproduct" data-pid="{{product.id}}">Add to Cart</button>
+                {% else %}
+                <button type="button" class="btn-xs" disabled>Out of Stock</button>
+
+                {% endif%}
+            </li>
+            {%endif%}
+        {% endfor %}
+    </ul>
+
+{% endblock %}

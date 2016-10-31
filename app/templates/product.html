@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{product.name}}</h2>    for
+{% if product.price==product.minpricecoupon.afterprice %}
+     Rs<b>{{product.price}}</b>
+{% else %}
+     Rs<s>{{product.price}}</s> <b>{{product.minpricecoupon.afterprice}}</b>
+{% endif %}
+
+    <div id="editproductvalue">
+    <div class="input-group">
+      <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-number" data-type="minus" data-field="quant">
+              <span class="glyphicon glyphicon-minus"></span>
+          </button>
+      </span>
+      <input type="text" name="quant" class="form-control input-number" value="{{product.incart}}" min="1" max="{{product.quantity}}">
+      <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant">
+              <span class="glyphicon glyphicon-plus"></span>
+          </button>
+      </span>
+
+        <span class="input-group-btn">
+            <button type="button" class=" btn-xs btn-success addproduct" data-pid="{{product.id}}">Add to Cart</button>
+        </span>
+        {% if product.incart>0%}
+        <span class="input-group-btn">
+            <button type="button" class=" btn-xs btn-danger removeproduct" data-pid="{{product.id}}">Remove from Cart</button>
+        </span>
+        {% endif %}
+    </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,6 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+            <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}">Login with Facebook</a></p>
+{% endblock %}
